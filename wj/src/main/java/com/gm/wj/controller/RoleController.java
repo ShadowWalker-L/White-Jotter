@@ -21,6 +21,7 @@ import java.util.Map;
  * @date 2019/11
  */
 @RestController
+@RequestMapping(value = "/api/admin/role")
 public class RoleController {
     @Autowired
     AdminRoleService adminRoleService;
@@ -31,19 +32,19 @@ public class RoleController {
     @Autowired
     AdminRoleMenuService adminRoleMenuService;
 
-    @GetMapping("/api/admin/role")
+    @GetMapping("/")
     public Result listRoles() {
         return ResultFactory.buildSuccessResult(adminRoleService.listWithPermsAndMenus());
     }
 
-    @PutMapping("/api/admin/role/status")
+    @PutMapping("/status")
     public Result updateRoleStatus(@RequestBody AdminRole requestRole) {
         AdminRole adminRole = adminRoleService.updateRoleStatus(requestRole);
         String message = "用户" + adminRole.getNameZh() + "状态更新成功";
         return ResultFactory.buildSuccessResult(message);
     }
 
-    @PutMapping("/api/admin/role")
+    @PutMapping("")
     public Result editRole(@RequestBody AdminRole requestRole) {
         adminRoleService.addOrUpdate(requestRole);
         adminRolePermissionService.savePermChanges(requestRole.getId(), requestRole.getPerms());
@@ -52,18 +53,18 @@ public class RoleController {
     }
 
 
-    @PostMapping("/api/admin/role")
+    @PostMapping("")
     public Result addRole(@RequestBody AdminRole requestRole) {
         adminRoleService.editRole(requestRole);
         return ResultFactory.buildSuccessResult("修改用户成功");
     }
 
-    @GetMapping("/api/admin/role/perm")
+    @GetMapping("/perm")
     public Result listPerms() {
         return ResultFactory.buildSuccessResult(adminPermissionService.list());
     }
 
-    @PutMapping("/api/admin/role/menu")
+    @PutMapping("/menu")
     public Result updateRoleMenu(@RequestParam int rid, @RequestBody Map<String, List<Integer>> menusIds) {
         adminRoleMenuService.updateRoleMenu(rid, menusIds);
         return ResultFactory.buildSuccessResult("更新成功");
