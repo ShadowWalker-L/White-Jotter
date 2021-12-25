@@ -23,7 +23,7 @@ public class MenuController {
     }
 
     @GetMapping("/api/admin/role/menu")
-    public Result listAllMenus() {
-        return ResultFactory.buildSuccessResult(adminMenuService.getMenusByRoleId(1));
+    public Result listAllMenusByRole (@RequestParam(defaultValue = "1") int rid) {
+        return ResultFactory.buildSuccessResult(adminMenuService.getMenusByRoleId(rid));
     }
 }
